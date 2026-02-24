@@ -11,14 +11,13 @@ st.write("""
 Spaced Repetition System SQL practice
 """)
 
-
-option = st.selectbox("What would you like to review?",
+with st.sidebar:
+    option = st.selectbox("What would you like to review?",
                       ["Joins", "GroupBy", "Window Functions"],
                       index=None,
                       placeholder="Select a theme..."
                     )
-
-st.write("You selected:", option)
+    st.write("You selected:", option)
 
 CSV = """
 beverage,price
