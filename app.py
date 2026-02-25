@@ -3,6 +3,8 @@ import pandas as pd
 import duckdb
 import io
 
+from pc_colleague.sql_srs.app import solution_df
+
 CSV = """
 beverage,price
 orange juice,2.5
@@ -19,12 +21,12 @@ muffin,3
 """
 food_items = pd.read_csv(io.StringIO(CSV2))
 
-answer = """
+answer_str = """
 SELECT * FROM beverages
 CROSS JOIN food_items
 """
 
-solution_df = duckdb.sql(answer) #.df()
+solution_df = duckdb.sql(answer_str).df()
 
 st.write("""
 # SQL SRS
@@ -46,7 +48,20 @@ if query:
     result = duckdb.query(query).df()
     st.dataframe(result)
 
-tab1,tab2 = st.tabs(["Tables", "Solution"])
+    try:
+        result = result[solution_df.columns]
+        st.dataframe(result.compare(solution_df))
+    except KeyError as e:
+        st.write("Some columns are missing")
+
+    n_lines_difference = result.shape[0] - solution_df.shape[0]
+    if n_lines_difference != 0:
+        st.write(
+        f"result has a {n_lines_difference} lines difference with the solution_df"
+        )
+
+
+tab1, tab2 = st.tabs(["Tables", "Solution"])
 
 with tab1:
     st.write("table: beverages")
@@ -57,4 +72,4 @@ with tab1:
     st.dataframe(solution_df)
 
 with tab2:
-    st.write(answer)
+    st.write(answer_str)
