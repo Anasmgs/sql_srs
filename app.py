@@ -3,8 +3,6 @@ import pandas as pd
 import duckdb
 import io
 
-#con = duckdb.connect(":default:")
-
 
 st.write("""
 # SQL SRS
