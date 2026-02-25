@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import duckdb
 
-#con = duckdb.connect(":default:")
-
 
 st.write("""
 # SQL SRS
