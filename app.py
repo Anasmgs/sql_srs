@@ -1,9 +1,9 @@
-import streamlit as st
-import pandas as pd
-import duckdb
+# pylint: disable=missing-module-docstring
 import io
 
-from pc_colleague.sql_srs.app import solution_df
+import duckdb
+import pandas as pd
+import streamlit as st
 
 CSV = """
 beverage,price
@@ -21,12 +21,12 @@ muffin,3
 """
 food_items = pd.read_csv(io.StringIO(CSV2))
 
-answer_str = """
+ANSWER_STR = """
 SELECT * FROM beverages
 CROSS JOIN food_items
 """
 
-solution_df = duckdb.sql(answer_str).df()
+solution_df = duckdb.sql(ANSWER_STR).df()
 
 st.write("""
 # SQL SRS
@@ -34,11 +34,12 @@ Spaced Repetition System SQL practice
 """)
 
 with st.sidebar:
-    option = st.selectbox("What would you like to review?",
-                      ["Joins", "GroupBy", "Window Functions"],
-                      index=None,
-                      placeholder="Select a theme..."
-                    )
+    option = st.selectbox(
+        "What would you like to review?",
+        ["Joins", "GroupBy", "Window Functions"],
+        index=None,
+        placeholder="Select a theme...",
+    )
     st.write("You selected:", option)
 
 st.header("enter your code:")
@@ -57,7 +58,7 @@ if query:
     n_lines_difference = result.shape[0] - solution_df.shape[0]
     if n_lines_difference != 0:
         st.write(
-        f"result has a {n_lines_difference} lines difference with the solution_df"
+            f"result has a {n_lines_difference} lines difference with the solution_df"
         )
 
 
@@ -72,4 +73,4 @@ with tab1:
     st.dataframe(solution_df)
 
 with tab2:
-    st.write(answer_str)
+    st.write(ANSWER_STR)
