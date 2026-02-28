@@ -1,6 +1,8 @@
 # pylint: disable=missing-module-docstring
+import ast
 
 import duckdb
+import pandas as pd
 import streamlit as st
 
 con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
@@ -32,10 +34,10 @@ with st.sidebar:
 st.header("enter your code:")
 query = st.text_area(label="Please write your input here", key="user_input")
 
-# if query:
-#     result = duckdb.query(query).df()
-#     st.dataframe(result)
-#
+if query:
+    result = con.execute(query).df()
+    st.dataframe(result)
+
 #     try:
 #         result = result[solution_df.columns]
 #         st.dataframe(result.compare(solution_df))
@@ -49,15 +51,16 @@ query = st.text_area(label="Please write your input here", key="user_input")
 #         )
 #
 #
-# tab1, tab2 = st.tabs(["Tables", "Solution"])
-#
-# with tab1:
-#     st.write("table: beverages")
-#     st.dataframe(beverages)
-#     st.write("table: food_items")
-#     st.dataframe(food_items)
-#     st.write("expected:")
-#     st.dataframe(solution_df)
-#
-# with tab2:
-#     st.write(ANSWER_STR)
+tab1, tab2 = st.tabs(["Tables", "Solution"])
+
+with tab1:
+    exercise_tables = ast.literal_eval(exercise.loc[0, "tables"])
+    for table in exercise_tables:
+        st.write(f"table: {table}")
+        df_table = con.execute(f"SELECT * FROM {table}").df()
+        st.dataframe(df_table)
+    # st.write("expected:")
+    # st.dataframe(solution_df)
+
+with tab2:
+    st.write(ANSWER_STR)
