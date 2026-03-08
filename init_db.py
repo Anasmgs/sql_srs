@@ -15,8 +15,9 @@ The database is opened in read-write mode to allow table creation and data inser
 """
 
 import io
-import pandas as pd
+
 import duckdb
+import pandas as pd
 
 con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
 
