@@ -22,7 +22,7 @@ Spaced Repetition System SQL practice
 with st.sidebar:
     theme = st.selectbox(
         "What would you like to review?",
-        ["cross_joins", "GroupBy", "Window Functions"],
+        ["cross_joins", "window_functions"],
         index=None,
         placeholder="Select a theme...",
     )
@@ -63,4 +63,7 @@ with tab1:
     # st.dataframe(solution_df)
 
 with tab2:
-    st.write(ANSWER_STR)
+    exercise_name = exercise.loc[0, "exercise_name"]
+    with open(f"answers/{exercise_name}.sql", "r") as f:
+        answer = f.read()
+    st.write(answer)
