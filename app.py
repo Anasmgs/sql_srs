@@ -37,7 +37,7 @@ def check_user_solution(user_query: str) -> None:
     try:
         result = result[solution_df.columns]
         st.dataframe(result.compare(solution_df))
-        if result.compare(solution_df).shape == (0,0):
+        if result.compare(solution_df).shape == (0, 0):
             st.write("Correct, well done!")
             st.balloons()
     except KeyError as e:
