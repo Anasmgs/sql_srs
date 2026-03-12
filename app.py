@@ -41,3 +41,37 @@ with st.sidebar:
         answer = f.read()
 
     solution_df = con.execute(answer).df()
+
+st.header("enter your code:")
+query = st.text_area(label="Please write your input here", key="user_input")
+
+if query:
+    result = con.execute(query).df()
+    st.dataframe(result)
+
+    try:
+        result = result[solution_df.columns]
+        st.dataframe(result.compare(solution_df))
+    except KeyError as e:
+        st.write("Some columns are missing")
+
+    n_lines_difference = result.shape[0] - solution_df.shape[0]
+    if n_lines_difference != 0:
+        st.write(
+            f"result has a {n_lines_difference} lines difference with the solution_df"
+        )
+
+
+tab1, tab2 = st.tabs(["Tables", "Solution"])
+
+with tab1:
+    exercise_tables = exercise.loc[0, "tables"]
+    for table in exercise_tables:
+        st.write(f"table: {table}")
+        df_table = con.execute(f"SELECT * FROM {table}").df()
+        st.dataframe(df_table)
+    # st.write("expected:")
+    # st.dataframe(solution_df)
+
+with tab2:
+    st.write(answer)
