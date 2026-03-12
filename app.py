@@ -1,9 +1,19 @@
 # pylint: disable=missing-module-docstring
 import ast
+import logging
+import os
 
 import duckdb
 import pandas as pd
 import streamlit as st
+
+if "data" not in os.listdir():
+    logging.error(os.listdir())
+    logging.error("Creating data directory")
+    os.mkdir("data")
+
+if "exercises_sql_tables.duckdb" not in os.listdir("data"):
+    exec(open("init_db.py").read())
 
 con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
 
