@@ -70,8 +70,8 @@ with tab1:
         st.write(f"table: {table}")
         df_table = con.execute(f"SELECT * FROM {table}").df()
         st.dataframe(df_table)
-    # st.write("expected:")
-    # st.dataframe(solution_df)
+    st.write("expected:")
+    st.dataframe(solution_df)
 
 with tab2:
     st.write(answer)
